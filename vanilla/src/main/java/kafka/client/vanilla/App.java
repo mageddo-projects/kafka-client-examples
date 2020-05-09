@@ -3,17 +3,17 @@ package kafka.client.vanilla;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 public class App {
-
-  public String getGreeting() {
-    return "Hello world.";
-  }
-
   public static void main(String[] args) throws InterruptedException {
 
     final var consumers = KafkaConfig.consumers();
     new StockConsumer(consumers);
     new StockBuyOrderConsumer(consumers);
 
+    keepProducingMsgs();
+
+  }
+
+  static void keepProducingMsgs() throws InterruptedException {
     final var producer = KafkaConfig.producer();
     for (;;){
       producer.send(new ProducerRecord<>(
