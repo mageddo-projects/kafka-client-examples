@@ -1,26 +1,23 @@
 package testing;
 
 import com.mageddo.kafka.client.Consumers;
-import kafka.client.spring.App;
+import io.micronaut.context.annotation.Context;
+import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Primary;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.Producer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
 
-@Configuration
-@Import(App.class)
+@Factory
 public class ConfigForTesting {
 
-  @Bean
   @Primary
+  @Context
   public Producer<String, String> producer() {
     return new MockProducer<>();
   }
 
-  @Bean
   @Primary
+  @Context
   public Consumers<String, String> consumers() {
     return Consumers
       .<String, String>builder()

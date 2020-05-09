@@ -1,20 +1,20 @@
-package kafka.client.spring;
+package kafka.client.micronaut;
 
 import com.mageddo.kafka.client.ConsumeCallback;
 import com.mageddo.kafka.client.Consumers;
 import com.mageddo.kafka.client.RecoverCallback;
 import com.mageddo.kafka.client.RetryPolicy;
+import io.micronaut.context.annotation.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.time.Duration;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
 
-@Component
-public class StockBuyOrderConsumer implements InitializingBean {
+@Context
+public class StockBuyOrderConsumer {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
   private final Consumers<String, String> consumers;
@@ -38,8 +38,8 @@ public class StockBuyOrderConsumer implements InitializingBean {
     return ctx -> log.info("status=recover, msg={}", ctx.lastFailure().getMessage());
   }
 
-  @Override
-  public void afterPropertiesSet() {
+  @PostConstruct
+  public void init() {
     this.consumers
       .toBuilder()
       .retryPolicy(RetryPolicy
@@ -49,7 +49,7 @@ public class StockBuyOrderConsumer implements InitializingBean {
         .build()
       )
       .consumers(3)
-      .prop(GROUP_ID_CONFIG, "spring_stock_buy")
+      .prop(GROUP_ID_CONFIG, "micronaut_stock_buy")
       .topics("stock_buy_order")
       .callback(this.consume())
       .recoverCallback(this.recover())
