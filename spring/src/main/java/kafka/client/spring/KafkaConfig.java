@@ -1,4 +1,4 @@
-package kafka.client.vanilla;
+package kafka.client.spring;
 
 import com.mageddo.kafka.client.Consumers;
 import org.apache.kafka.clients.CommonClientConfigs;

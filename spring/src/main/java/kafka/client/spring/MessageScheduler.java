@@ -1,4 +1,4 @@
-package kafka.client.vanilla;
+package kafka.client.spring;
 
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;

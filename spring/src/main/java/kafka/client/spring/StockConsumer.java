@@ -1,4 +1,4 @@
-package kafka.client.vanilla;
+package kafka.client.spring;
 
 import com.mageddo.kafka.client.ConsumeCallback;
 import com.mageddo.kafka.client.Consumers;
