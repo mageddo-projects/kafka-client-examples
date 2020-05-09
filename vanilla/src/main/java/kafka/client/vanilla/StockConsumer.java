@@ -30,7 +30,7 @@ public class StockConsumer {
 
   ConsumeCallback<String, String> consume() {
     return (ctx, record) -> {
-      log.info("status=consumed, {}", record.value());
+      log.info("status=price-updated, {}", record.value());
     };
   }
 }

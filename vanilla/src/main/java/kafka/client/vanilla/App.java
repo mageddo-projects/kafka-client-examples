@@ -30,9 +30,9 @@ public class App {
     }
   }
 
-  private static String randomSymbol() {
+  static String randomSymbol() {
     final StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i <3; i++) {
       sb.append((char) ((int) (Math.random() * 100) % 26 + 65));
     }
     return sb.toString();

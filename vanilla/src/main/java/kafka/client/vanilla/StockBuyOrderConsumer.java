@@ -49,7 +49,7 @@ public class StockBuyOrderConsumer {
       if(r > 0.50 && r < 0.65){
         throw new RuntimeException("Not enough cash! (" + record.value() + ")");
       }
-      log.info("status=consumed, {}", record.value());
+      log.info("status=bought, {}", record.value());
     };
   }
 }
