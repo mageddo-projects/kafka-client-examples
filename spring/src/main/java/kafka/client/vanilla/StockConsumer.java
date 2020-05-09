@@ -30,7 +30,7 @@ public class StockConsumer implements InitializingBean {
     this.consumers
       .toBuilder()
       .consumers(3)
-      .prop(GROUP_ID_CONFIG, "vanilla_stock")
+      .prop(GROUP_ID_CONFIG, "spring_stock")
       .topics("stock_changed")
       .callback(this.consume())
       .build()
