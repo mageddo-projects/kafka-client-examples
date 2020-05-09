@@ -28,6 +28,7 @@ dependencies {
   testAnnotationProcessor("io.micronaut:micronaut-inject-java")
   testCompileOnly("io.micronaut:micronaut-inject-java")
   testImplementation("io.micronaut.test:micronaut-test-junit5")
+  testImplementation("org.junit.jupiter:junit-jupiter:5.4.2")
 
 }
 

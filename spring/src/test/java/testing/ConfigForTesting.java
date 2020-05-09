@@ -21,7 +21,7 @@ public class ConfigForTesting {
 
   @Bean
   @Primary
-  public static Consumers<String, String> consumers() {
+  public Consumers<String, String> consumers() {
     return Consumers
       .<String, String>builder()
       .consumers(Integer.MIN_VALUE) // disabling consumers
