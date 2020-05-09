@@ -12,6 +12,7 @@ dependencies {
 
   implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
   implementation 'io.quarkus:quarkus-resteasy'
+  implementation 'io.quarkus:quarkus-jackson'
   implementation 'io.quarkus:quarkus-scheduler'
   implementation 'io.quarkus:quarkus-kafka-client'
   implementation 'com.mageddo.kafka-client:kafka-client:1.0.0'
