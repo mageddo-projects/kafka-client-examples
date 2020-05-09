@@ -1,5 +1,6 @@
 package kafka.client.vanilla;
 
+import com.mageddo.kafka.client.CallbackContext;
 import com.mageddo.kafka.client.DefaultCallbackContext;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.Test;
@@ -9,11 +10,13 @@ class StockConsumerTest {
   @Test
   void mustUpdatePrices() throws Exception {
     // arrange
-    final var consumer = new StockConsumer(TestKafkaConfig.consumers());
+    final StockConsumer consumer = new StockConsumer(TestKafkaConfig.consumers());
 
     // act
-    final var record = new ConsumerRecord<>("topic", 0, 0, "key", "some message");
-    final var callbackContext = DefaultCallbackContext
+    final ConsumerRecord<String, String> record = new ConsumerRecord<>(
+      "topic", 0, 0, "key", "some message"
+    );
+    final CallbackContext<String, String> callbackContext = DefaultCallbackContext
       .<String, String>NOP()
       .toBuilder()
       .record(record)

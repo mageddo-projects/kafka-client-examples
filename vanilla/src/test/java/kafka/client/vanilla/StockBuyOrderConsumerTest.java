@@ -1,5 +1,6 @@
 package kafka.client.vanilla;
 
+import com.mageddo.kafka.client.CallbackContext;
 import com.mageddo.kafka.client.DefaultCallbackContext;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.Test;
@@ -12,11 +13,13 @@ class StockBuyOrderConsumerTest {
   @Test
   void mustValidateStock() {
     // arrange
-    final var consumer = new StockBuyOrderConsumer(TestKafkaConfig.consumers());
+    final StockBuyOrderConsumer consumer = new StockBuyOrderConsumer(TestKafkaConfig.consumers());
 
     // act
-    final var record = new ConsumerRecord<>("topic", 0, 0, "key", "symbol=AXB");
-    final var callbackContext = DefaultCallbackContext
+    final ConsumerRecord<String, String> record = new ConsumerRecord<>(
+      "topic", 0, 0, "key", "symbol=AXB"
+    );
+    final CallbackContext<String, String> callbackContext = DefaultCallbackContext
       .<String, String>NOP()
       .toBuilder()
       .record(record)

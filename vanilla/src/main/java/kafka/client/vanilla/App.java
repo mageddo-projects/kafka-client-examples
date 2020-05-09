@@ -1,11 +1,13 @@
 package kafka.client.vanilla;
 
+import com.mageddo.kafka.client.Consumers;
+import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 public class App {
   public static void main(String[] args) throws InterruptedException {
 
-    final var consumers = KafkaConfig.consumers();
+    final Consumers<String, String> consumers = KafkaConfig.consumers();
     new StockConsumer(consumers);
     new StockBuyOrderConsumer(consumers);
 
@@ -14,7 +16,7 @@ public class App {
   }
 
   static void keepProducingMsgs() throws InterruptedException {
-    final var producer = KafkaConfig.producer();
+    final Producer<String, String> producer = KafkaConfig.producer();
     for (;;){
       producer.send(new ProducerRecord<>(
         "stock_changed",
