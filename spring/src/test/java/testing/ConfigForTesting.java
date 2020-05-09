@@ -1,7 +1,7 @@
 package testing;
 
 import com.mageddo.kafka.client.Consumers;
-import kafka.client.vanilla.App;
+import kafka.client.spring.App;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.springframework.context.annotation.Bean;

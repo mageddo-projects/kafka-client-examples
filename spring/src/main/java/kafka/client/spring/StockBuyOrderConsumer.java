@@ -1,4 +1,4 @@
-package kafka.client.vanilla;
+package kafka.client.spring;
 
 import com.mageddo.kafka.client.ConsumeCallback;
 import com.mageddo.kafka.client.Consumers;
@@ -49,7 +49,7 @@ public class StockBuyOrderConsumer implements InitializingBean {
         .build()
       )
       .consumers(3)
-      .prop(GROUP_ID_CONFIG, "vanilla_stock_buy")
+      .prop(GROUP_ID_CONFIG, "spring_stock_buy")
       .topics("stock_buy_order")
       .callback(this.consume())
       .recoverCallback(this.recover())

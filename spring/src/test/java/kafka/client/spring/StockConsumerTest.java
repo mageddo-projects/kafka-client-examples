@@ -1,4 +1,4 @@
-package kafka.client.vanilla;
+package kafka.client.spring;
 
 import com.mageddo.kafka.client.CallbackContext;
 import com.mageddo.kafka.client.DefaultCallbackContext;
@@ -10,22 +10,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import testing.ConfigForTesting;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 @SpringBootTest(classes = ConfigForTesting.class)
 @ExtendWith(SpringExtension.class)
-class StockBuyOrderConsumerTest {
+class StockConsumerTest {
 
   @Autowired
-  private StockBuyOrderConsumer consumer;
+  private StockConsumer consumer;
 
   @Test
-  void mustValidateStock() {
+  void mustUpdatePrices() throws Exception {
     // arrange
 
     // act
     final ConsumerRecord<String, String> record = new ConsumerRecord<>(
-      "topic", 0, 0, "key", "symbol=AXB"
+      "topic", 0, 0, "key", "some message"
     );
     final CallbackContext<String, String> callbackContext = DefaultCallbackContext
       .<String, String>NOP()
@@ -34,14 +32,11 @@ class StockBuyOrderConsumerTest {
       .build()
       ;
 
-    assertThrows(IllegalArgumentException.class, () -> {
-      this.consumer
-        .consume()
-        .accept(callbackContext, record);
-    })
+    this.consumer
+      .consume()
+      .accept(callbackContext, record)
     ;
 
     // assert
   }
-
 }
