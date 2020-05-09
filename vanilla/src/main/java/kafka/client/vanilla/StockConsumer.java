@@ -21,7 +21,7 @@ public class StockConsumer {
     this.consumers
       .toBuilder()
       .consumers(3)
-      .prop(GROUP_ID_CONFIG, "stocks")
+      .prop(GROUP_ID_CONFIG, "vanilla_stock")
       .topics("stock_changed")
       .callback(this.consume())
       .build()

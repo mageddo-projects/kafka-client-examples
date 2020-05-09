@@ -10,15 +10,23 @@ public class App {
 
   public static void main(String[] args) throws InterruptedException {
 
-    new StockConsumer(KafkaConfig.consumers());
+    final var consumers = KafkaConfig.consumers();
+    new StockConsumer(consumers);
+    new StockBuyOrderConsumer(consumers);
 
     final var producer = KafkaConfig.producer();
     for (;;){
-      Thread.sleep(1000);
       producer.send(new ProducerRecord<>(
         "stock_changed",
         String.format("symbol=%s, amount=%.2f", randomSymbol(), Math.random())
       ));
+
+      producer.send(new ProducerRecord<>(
+        "stock_buy_order",
+        String.format("symbol=%s, amount=%.2f, expires_in=2 minutes", randomSymbol(), Math.random())
+      ));
+
+      Thread.sleep(1000);
     }
   }
 
