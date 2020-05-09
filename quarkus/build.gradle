@@ -1,0 +1,39 @@
+plugins {
+  id 'java'
+  id 'io.quarkus'
+}
+
+repositories {
+  mavenLocal()
+  jcenter()
+}
+
+dependencies {
+
+  implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+  implementation 'io.quarkus:quarkus-resteasy'
+  implementation 'io.quarkus:quarkus-scheduler'
+  implementation 'io.quarkus:quarkus-kafka-client'
+  implementation 'com.mageddo.kafka-client:kafka-client:1.0.0'
+
+  testImplementation 'io.quarkus:quarkus-junit5'
+
+}
+
+test {
+  useJUnitPlatform()
+}
+
+compileJava {
+  options.encoding = 'UTF-8'
+  options.compilerArgs << '-parameters'
+}
+
+compileTestJava {
+  options.encoding = 'UTF-8'
+}
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_1_8
+  targetCompatibility = JavaVersion.VERSION_1_8
+}
