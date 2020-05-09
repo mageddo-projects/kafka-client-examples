@@ -4,16 +4,16 @@ import com.mageddo.kafka.client.ConsumeCallback;
 import com.mageddo.kafka.client.Consumers;
 import com.mageddo.kafka.client.RecoverCallback;
 import com.mageddo.kafka.client.RetryPolicy;
-import io.micronaut.context.annotation.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Singleton;
 import java.time.Duration;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
 
-@Context
+@Singleton
 public class StockBuyOrderConsumer {
 
   private final Logger log = LoggerFactory.getLogger(getClass());

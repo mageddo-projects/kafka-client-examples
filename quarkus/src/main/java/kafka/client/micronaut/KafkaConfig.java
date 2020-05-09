@@ -1,7 +1,7 @@
 package kafka.client.micronaut;
 
 import com.mageddo.kafka.client.Consumers;
-import io.micronaut.context.annotation.Factory;
+import io.quarkus.arc.DefaultBean;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -9,17 +9,17 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import javax.inject.Singleton;
+import javax.enterprise.inject.Produces;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 
-@Factory
 public class KafkaConfig {
 
-  @Singleton
+  @Produces
+  @DefaultBean
   public Producer<String, String> producer() {
     final Map<String, Object> props = new LinkedHashMap<>();
     props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -28,7 +28,8 @@ public class KafkaConfig {
     return new KafkaProducer<>(props);
   }
 
-  @Singleton
+  @Produces
+  @DefaultBean
   public Consumers<String, String> consumers() {
     return Consumers
       .<String, String>builder()

@@ -1,23 +1,19 @@
 package testing;
 
 import com.mageddo.kafka.client.Consumers;
-import io.micronaut.context.annotation.Context;
-import io.micronaut.context.annotation.Factory;
-import io.micronaut.context.annotation.Primary;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.Producer;
 
-@Factory
+import javax.enterprise.inject.Produces;
+
 public class ConfigForTesting {
 
-  @Primary
-  @Context
+  @Produces
   public Producer<String, String> producer() {
     return new MockProducer<>();
   }
 
-  @Primary
-  @Context
+  @Produces
   public Consumers<String, String> consumers() {
     return Consumers
       .<String, String>builder()

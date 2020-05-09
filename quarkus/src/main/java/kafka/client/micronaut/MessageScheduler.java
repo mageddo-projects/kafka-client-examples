@@ -1,6 +1,6 @@
 package kafka.client.micronaut;
 
-import io.micronaut.scheduling.annotation.Scheduled;
+import io.quarkus.scheduler.Scheduled;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ public class MessageScheduler {
     this.producer = producer;
   }
 
-  @Scheduled(fixedDelay = "1s")
+  @Scheduled(every = "PT1S")
   public void keepProducingMsgs() {
     log.info("status=send-stock-messages");
     producer.send(new ProducerRecord<>(
