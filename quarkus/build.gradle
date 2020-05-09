@@ -20,6 +20,9 @@ dependencies {
 
 }
 
+group 'kafka.client.quarkus'
+version '1.0.0'
+
 test {
   useJUnitPlatform()
 }
