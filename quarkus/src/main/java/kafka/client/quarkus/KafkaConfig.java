@@ -1,4 +1,4 @@
-package kafka.client.micronaut;
+package kafka.client.quarkus;
 
 import com.mageddo.kafka.client.Consumers;
 import io.quarkus.arc.DefaultBean;

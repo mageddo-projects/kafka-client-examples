@@ -1,4 +1,4 @@
-package kafka.client.micronaut;
+package kafka.client.quarkus;
 
 import io.quarkus.scheduler.Scheduled;
 import org.apache.kafka.clients.producer.Producer;
