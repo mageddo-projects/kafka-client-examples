@@ -15,7 +15,7 @@ import testing.ConfigForTesting;
 class StockConsumerTest {
 
   @Autowired
-  private StockConsumer consumer;
+  StockConsumer consumer;
 
   @Test
   void mustUpdatePrices() throws Exception {

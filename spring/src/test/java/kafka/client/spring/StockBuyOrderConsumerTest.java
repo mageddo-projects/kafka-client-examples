@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class StockBuyOrderConsumerTest {
 
   @Autowired
-  private StockBuyOrderConsumer consumer;
+  StockBuyOrderConsumer consumer;
 
   @Test
   void mustValidateStock() {

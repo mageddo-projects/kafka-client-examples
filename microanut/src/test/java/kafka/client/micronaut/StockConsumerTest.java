@@ -12,7 +12,7 @@ import javax.inject.Inject;
 class StockConsumerTest {
 
   @Inject
-  private StockConsumer consumer;
+  StockConsumer consumer;
 
   @Test
   void mustUpdatePrices() throws Exception {

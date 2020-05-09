@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class StockBuyOrderConsumerTest {
 
   @Inject
-  private StockBuyOrderConsumer consumer;
+  StockBuyOrderConsumer consumer;
 
   @Test
   void mustValidateStock() {
