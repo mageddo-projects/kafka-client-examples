@@ -45,9 +45,10 @@ public class StockBuyOrderConsumer {
 
   ConsumeCallback<String, String> consume() {
     return (ctx, record) -> {
-      final var r = Math.random();
-      if(r > 0.50 && r < 0.65){
-        throw new RuntimeException("Not enough cash! (" + record.value() + ")");
+      if(record.value().contains("symbol=A")){
+        throw new IllegalArgumentException(
+          "Can't buy symbols starting with letter 'A'! (Don't ask me why), stock=" + record.value()
+        );
       }
       log.info("status=bought, {}", record.value());
     };
