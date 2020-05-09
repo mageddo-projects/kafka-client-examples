@@ -4,10 +4,11 @@ import com.mageddo.kafka.client.ConsumeCallback;
 import com.mageddo.kafka.client.Consumers;
 import com.mageddo.kafka.client.RecoverCallback;
 import com.mageddo.kafka.client.RetryPolicy;
+import io.quarkus.runtime.StartupEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
+import javax.enterprise.event.Observes;
 import javax.inject.Singleton;
 import java.time.Duration;
 
@@ -38,8 +39,7 @@ public class StockBuyOrderConsumer {
     return ctx -> log.info("status=recover, msg={}", ctx.lastFailure().getMessage());
   }
 
-  @PostConstruct
-  public void init() {
+  public void init(@Observes StartupEvent event) {
     this.consumers
       .toBuilder()
       .retryPolicy(RetryPolicy
@@ -49,7 +49,7 @@ public class StockBuyOrderConsumer {
         .build()
       )
       .consumers(3)
-      .prop(GROUP_ID_CONFIG, "micronaut_stock_buy")
+      .prop(GROUP_ID_CONFIG, "quarkus_stock_buy")
       .topics("stock_buy_order")
       .callback(this.consume())
       .recoverCallback(this.recover())

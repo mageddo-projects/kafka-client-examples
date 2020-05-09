@@ -2,10 +2,11 @@ package kafka.client.micronaut;
 
 import com.mageddo.kafka.client.ConsumeCallback;
 import com.mageddo.kafka.client.Consumers;
+import io.quarkus.runtime.StartupEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
+import javax.enterprise.event.Observes;
 import javax.inject.Singleton;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
@@ -26,12 +27,11 @@ public class StockConsumer {
     };
   }
 
-  @PostConstruct
-  public void init() {
+  public void init(@Observes StartupEvent event) {
     this.consumers
       .toBuilder()
       .consumers(3)
-      .prop(GROUP_ID_CONFIG, "micronaut_stock")
+      .prop(GROUP_ID_CONFIG, "quarkus_stock")
       .topics("stock_changed")
       .callback(this.consume())
       .build()
