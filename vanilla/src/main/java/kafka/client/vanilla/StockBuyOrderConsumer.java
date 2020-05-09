@@ -39,10 +39,6 @@ public class StockBuyOrderConsumer {
       .consume();
   }
 
-  private RecoverCallback<String, String> recover() {
-    return ctx -> log.info("status=recover, msg={}", ctx.lastFailure().getMessage());
-  }
-
   ConsumeCallback<String, String> consume() {
     return (ctx, record) -> {
       if(record.value().contains("symbol=A")){
@@ -53,4 +49,9 @@ public class StockBuyOrderConsumer {
       log.info("status=bought, {}", record.value());
     };
   }
+
+  RecoverCallback<String, String> recover() {
+    return ctx -> log.info("status=recover, msg={}", ctx.lastFailure().getMessage());
+  }
+
 }
