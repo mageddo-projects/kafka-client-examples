@@ -1,7 +1,6 @@
 plugins {
-  id 'org.springframework.boot' version '2.2.2.RELEASE'
-  id 'io.spring.dependency-management' version '1.0.8.RELEASE'
   id 'java'
+  id 'application'
 }
 
 repositories {
@@ -9,10 +8,10 @@ repositories {
   jcenter()
 }
 
-//sourceCompatibility = JavaVersion.
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
-
+  implementation platform('org.springframework.boot:spring-boot-dependencies:2.2.2.RELEASE')
   implementation 'org.springframework.boot:spring-boot-starter'
   implementation 'com.mageddo.kafka-client:kafka-client:1.0.0'
   testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -24,4 +23,8 @@ dependencies {
 
 test {
   useJUnitPlatform()
+}
+
+application {
+  mainClassName = 'kafka.client.vanilla.App'
 }
