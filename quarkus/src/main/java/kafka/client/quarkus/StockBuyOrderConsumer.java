@@ -1,31 +1,22 @@
 package kafka.client.quarkus;
 
 import com.mageddo.kafka.client.ConsumeCallback;
-import com.mageddo.kafka.client.ConsumerFactory;
-import com.mageddo.kafka.client.Consumers;
+import com.mageddo.kafka.client.Consumer;
+import com.mageddo.kafka.client.ConsumerConfig;
 import com.mageddo.kafka.client.RecoverCallback;
 import com.mageddo.kafka.client.RetryPolicy;
-import io.quarkus.runtime.ShutdownEvent;
-import io.quarkus.runtime.StartupEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.event.Observes;
 import javax.inject.Singleton;
 import java.time.Duration;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
 
 @Singleton
-public class StockBuyOrderConsumer {
+public class StockBuyOrderConsumer implements Consumer {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
-  private final Consumers<String, String> consumers;
-  private ConsumerFactory<String, String> consumerFactory;
-
-  public StockBuyOrderConsumer(Consumers<String, String> consumers) {
-    this.consumers = consumers;
-  }
 
   ConsumeCallback<String, String> consume() {
     return (ctx, record) -> {
@@ -42,9 +33,10 @@ public class StockBuyOrderConsumer {
     return ctx -> log.info("status=recover, msg={}", ctx.lastFailure().getMessage());
   }
 
-  public void init(@Observes StartupEvent event) {
-    this.consumerFactory = this.consumers
-      .toBuilder()
+  @Override
+  public ConsumerConfig<String, String> config() {
+    return ConsumerConfig
+      .<String, String>builder()
       .retryPolicy(RetryPolicy
         .builder()
         .delay(Duration.ofSeconds(5))
@@ -56,11 +48,7 @@ public class StockBuyOrderConsumer {
       .topics("stock_buy_order")
       .callback(this.consume())
       .recoverCallback(this.recover())
-      .build()
-      .consume();
+      .build();
   }
 
-  public void close(@Observes ShutdownEvent event) throws Exception {
-    this.consumerFactory.close();
-  }
 }

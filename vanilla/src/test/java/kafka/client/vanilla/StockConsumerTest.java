@@ -10,7 +10,7 @@ class StockConsumerTest {
   @Test
   void mustUpdatePrices() throws Exception {
     // arrange
-    final StockConsumer consumer = new StockConsumer(TestKafkaConfig.consumers());
+    final StockConsumer consumer = new StockConsumer();
 
     // act
     final ConsumerRecord<String, String> record = new ConsumerRecord<>(

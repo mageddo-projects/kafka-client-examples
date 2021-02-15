@@ -4,7 +4,6 @@ import com.mageddo.kafka.client.CallbackContext;
 import com.mageddo.kafka.client.DefaultCallbackContext;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.Test;
-import testing.TestKafkaConfig;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -13,7 +12,7 @@ class StockBuyOrderConsumerTest {
   @Test
   void mustValidateStock() {
     // arrange
-    final StockBuyOrderConsumer consumer = new StockBuyOrderConsumer(TestKafkaConfig.consumers());
+    final StockBuyOrderConsumer consumer = new StockBuyOrderConsumer();
 
     // act
     final ConsumerRecord<String, String> record = new ConsumerRecord<>(

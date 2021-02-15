@@ -1,6 +1,6 @@
 package testing;
 
-import com.mageddo.kafka.client.Consumers;
+import com.mageddo.kafka.client.ConsumerConfig;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Primary;
@@ -18,8 +18,8 @@ public class ConfigForTesting {
 
   @Primary
   @Context
-  public Consumers<String, String> consumers() {
-    return Consumers
+  public ConsumerConfig<String, String> consumers() {
+    return ConsumerConfig
       .<String, String>builder()
       .consumers(Integer.MIN_VALUE) // disabling consumers
       .build()

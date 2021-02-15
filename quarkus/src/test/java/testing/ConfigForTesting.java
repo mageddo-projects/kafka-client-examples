@@ -1,6 +1,6 @@
 package testing;
 
-import com.mageddo.kafka.client.Consumers;
+import com.mageddo.kafka.client.ConsumerConfig;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.Producer;
 
@@ -14,8 +14,8 @@ public class ConfigForTesting {
   }
 
   @Produces
-  public Consumers<String, String> consumers() {
-    return Consumers
+  public ConsumerConfig<String, String> consumers() {
+    return ConsumerConfig
       .<String, String>builder()
       .consumers(Integer.MIN_VALUE) // disabling consumers
       .build()

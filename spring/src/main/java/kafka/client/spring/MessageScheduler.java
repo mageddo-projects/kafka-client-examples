@@ -21,12 +21,12 @@ public class MessageScheduler {
   @Scheduled(fixedDelay = ONE_SECOND_IN_MILLIS)
   public void keepProducingMsgs() {
     log.info("status=send-stock-messages");
-    producer.send(new ProducerRecord<>(
+    this.producer.send(new ProducerRecord<>(
       "stock_changed",
       String.format("symbol=%s, amount=%.2f", randomSymbol(), Math.random())
     ));
 
-    producer.send(new ProducerRecord<>(
+    this.producer.send(new ProducerRecord<>(
       "stock_buy_order",
       String.format("symbol=%s, amount=%.2f, expires_in=2 minutes", randomSymbol(), Math.random())
     ));

@@ -1,31 +1,26 @@
 package kafka.client.micronaut;
 
 import com.mageddo.kafka.client.ConsumeCallback;
-import com.mageddo.kafka.client.Consumers;
+import com.mageddo.kafka.client.Consumer;
+import com.mageddo.kafka.client.ConsumerConfig;
 import com.mageddo.kafka.client.RecoverCallback;
 import com.mageddo.kafka.client.RetryPolicy;
-import io.micronaut.context.annotation.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
+import javax.inject.Singleton;
 import java.time.Duration;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
 
-@Context
-public class StockBuyOrderConsumer {
+@Singleton
+public class StockBuyOrderConsumer implements Consumer {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
-  private final Consumers<String, String> consumers;
-
-  public StockBuyOrderConsumer(Consumers<String, String> consumers) {
-    this.consumers = consumers;
-  }
 
   ConsumeCallback<String, String> consume() {
     return (ctx, record) -> {
-      if(record.value().contains("symbol=A")){
+      if (record.value().contains("symbol=A")) {
         throw new IllegalArgumentException(
           "Can't buy symbols starting with letter 'A'! (Don't ask me why), stock=" + record.value()
         );
@@ -38,10 +33,10 @@ public class StockBuyOrderConsumer {
     return ctx -> log.info("status=recover, msg={}", ctx.lastFailure().getMessage());
   }
 
-  @PostConstruct
-  public void init() {
-    this.consumers
-      .toBuilder()
+  @Override
+  public ConsumerConfig<String, String> config() {
+    return ConsumerConfig
+      .<String, String>builder()
       .retryPolicy(RetryPolicy
         .builder()
         .delay(Duration.ofSeconds(5))
@@ -53,7 +48,6 @@ public class StockBuyOrderConsumer {
       .topics("stock_buy_order")
       .callback(this.consume())
       .recoverCallback(this.recover())
-      .build()
-      .consume();
+      .build();
   }
 }
