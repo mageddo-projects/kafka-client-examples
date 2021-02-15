@@ -7,3 +7,4 @@ A set of [kafka-client][1] examples
 # Examples by Kafka Client version
 
 * [1.0.0](https://github.com/mageddo-projects/kafka-client-examples/tree/v1.0.0)
+* [1.0.0](https://github.com/mageddo-projects/kafka-client-examples/tree/v2.0.0)
