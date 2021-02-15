@@ -1,18 +1,21 @@
 package kafka.client.vanilla;
 
-import com.mageddo.kafka.client.Consumers;
+import com.mageddo.kafka.client.ConsumerStarter;
+import com.sun.tools.javac.util.List;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 public class App {
   public static void main(String[] args) throws InterruptedException {
 
-    final Consumers<String, String> consumers = KafkaConfig.consumers();
-    new StockConsumer(consumers);
-    new StockBuyOrderConsumer(consumers);
-
-    keepProducingMsgs();
-
+    final ConsumerStarter consumerStarter = ConsumerStarter.start(KafkaConfig.defaultConfig(), List.of(
+      new StockConsumer(), new StockBuyOrderConsumer()
+    ));
+    try {
+      keepProducingMsgs();
+    } finally {
+      consumerStarter.stop();
+    }
   }
 
   static void keepProducingMsgs() throws InterruptedException {

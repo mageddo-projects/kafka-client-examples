@@ -1,6 +1,6 @@
 package kafka.client.vanilla;
 
-import com.mageddo.kafka.client.Consumers;
+import com.mageddo.kafka.client.ConsumerConfig;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -24,8 +24,8 @@ public class KafkaConfig {
     return new KafkaProducer<>(props);
   }
 
-  public static Consumers<String, String> consumers() {
-    return Consumers
+  public static ConsumerConfig<String, String> defaultConfig() {
+    return ConsumerConfig
       .<String, String>builder()
       .prop(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092")
       .prop(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName())

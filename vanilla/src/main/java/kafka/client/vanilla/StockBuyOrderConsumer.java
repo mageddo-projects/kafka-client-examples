@@ -1,7 +1,8 @@
 package kafka.client.vanilla;
 
 import com.mageddo.kafka.client.ConsumeCallback;
-import com.mageddo.kafka.client.Consumers;
+import com.mageddo.kafka.client.Consumer;
+import com.mageddo.kafka.client.ConsumerConfig;
 import com.mageddo.kafka.client.RecoverCallback;
 import com.mageddo.kafka.client.RetryPolicy;
 import org.slf4j.Logger;
@@ -11,19 +12,28 @@ import java.time.Duration;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
 
-public class StockBuyOrderConsumer {
+public class StockBuyOrderConsumer implements Consumer {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
-  private final Consumers<String, String> consumers;
 
-  public StockBuyOrderConsumer(Consumers<String, String> consumers) {
-    this.consumers = consumers;
-    this.init();
+  ConsumeCallback<String, String> consume() {
+    return (ctx, record) -> {
+      if (record.value().contains("symbol=A")) {
+        throw new IllegalArgumentException(
+          "Can't buy symbols starting with letter 'A'! (Don't ask me why), stock=" + record.value()
+        );
+      }
+      log.info("status=bought, {}", record.value());
+    };
   }
 
-  public void init() {
-    this.consumers
-      .toBuilder()
+  RecoverCallback<String, String> recover() {
+    return ctx -> log.info("status=recover, msg={}", ctx.lastFailure().getMessage());
+  }
+
+  public ConsumerConfig<String, String> config() {
+    return ConsumerConfig
+      .<String, String>builder()
       .retryPolicy(RetryPolicy
         .builder()
         .delay(Duration.ofSeconds(5))
@@ -35,23 +45,7 @@ public class StockBuyOrderConsumer {
       .topics("stock_buy_order")
       .callback(this.consume())
       .recoverCallback(this.recover())
-      .build()
-      .consume();
-  }
-
-  ConsumeCallback<String, String> consume() {
-    return (ctx, record) -> {
-      if(record.value().contains("symbol=A")){
-        throw new IllegalArgumentException(
-          "Can't buy symbols starting with letter 'A'! (Don't ask me why), stock=" + record.value()
-        );
-      }
-      log.info("status=bought, {}", record.value());
-    };
-  }
-
-  RecoverCallback<String, String> recover() {
-    return ctx -> log.info("status=recover, msg={}", ctx.lastFailure().getMessage());
+      .build();
   }
 
 }
