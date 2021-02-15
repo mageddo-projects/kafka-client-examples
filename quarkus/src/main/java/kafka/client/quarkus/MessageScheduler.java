@@ -6,14 +6,17 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class MessageScheduler {
 
+
   private final Logger log = LoggerFactory.getLogger(getClass());
   private final Producer<String, String> producer;
 
+  @Inject
   public MessageScheduler(Producer<String, String> producer) {
     this.producer = producer;
   }
@@ -21,12 +24,12 @@ public class MessageScheduler {
   @Scheduled(every = "PT1S")
   public void keepProducingMsgs() {
     log.info("status=send-stock-messages");
-    producer.send(new ProducerRecord<>(
+    this.producer.send(new ProducerRecord<>(
       "stock_changed",
       String.format("symbol=%s, amount=%.2f", randomSymbol(), Math.random())
     ));
 
-    producer.send(new ProducerRecord<>(
+    this.producer.send(new ProducerRecord<>(
       "stock_buy_order",
       String.format("symbol=%s, amount=%.2f, expires_in=2 minutes", randomSymbol(), Math.random())
     ));

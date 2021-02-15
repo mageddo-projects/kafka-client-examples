@@ -1,28 +1,19 @@
 package kafka.client.quarkus;
 
 import com.mageddo.kafka.client.ConsumeCallback;
-import com.mageddo.kafka.client.ConsumerFactory;
-import com.mageddo.kafka.client.Consumers;
-import io.quarkus.runtime.ShutdownEvent;
-import io.quarkus.runtime.StartupEvent;
+import com.mageddo.kafka.client.Consumer;
+import com.mageddo.kafka.client.ConsumerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.event.Observes;
 import javax.inject.Singleton;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
 
 @Singleton
-public class StockConsumer {
+public class StockConsumer implements Consumer {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
-  private final Consumers<String, String> consumers;
-  private ConsumerFactory<String, String> consumerFactory;
-
-  public StockConsumer(Consumers<String, String> consumers) {
-    this.consumers = consumers;
-  }
 
   ConsumeCallback<String, String> consume() {
     return (ctx, record) -> {
@@ -30,18 +21,15 @@ public class StockConsumer {
     };
   }
 
-  public void init(@Observes StartupEvent event) {
-    this.consumerFactory = this.consumers
-      .toBuilder()
+  @Override
+  public ConsumerConfig<String, String> config() {
+    return ConsumerConfig
+      .<String, String>builder()
       .consumers(3)
       .prop(GROUP_ID_CONFIG, "quarkus_stock")
       .topics("stock_changed")
       .callback(this.consume())
-      .build()
-      .consume();
+      .build();
   }
 
-  public void close(@Observes ShutdownEvent event) throws Exception {
-    this.consumerFactory.close();
-  }
 }
